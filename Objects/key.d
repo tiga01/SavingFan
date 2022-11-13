@@ -1,0 +1,37 @@
+.\objects\key.o: BSP\key.c
+.\objects\key.o: BSP\key.h
+.\objects\key.o: .\USER\stm32f10x.h
+.\objects\key.o: .\CORE\core_cm3.h
+.\objects\key.o: D:\keil MDK\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\key.o: .\USER\system_stm32f10x.h
+.\objects\key.o: .\USER\stm32f10x_conf.h
+.\objects\key.o: .\FWLib\inc\stm32f10x_adc.h
+.\objects\key.o: .\USER\stm32f10x.h
+.\objects\key.o: .\FWLib\inc\stm32f10x_bkp.h
+.\objects\key.o: .\FWLib\inc\stm32f10x_can.h
+.\objects\key.o: .\FWLib\inc\stm32f10x_cec.h
+.\objects\key.o: .\FWLib\inc\stm32f10x_crc.h
+.\objects\key.o: .\FWLib\inc\stm32f10x_dac.h
+.\objects\key.o: .\FWLib\inc\stm32f10x_dbgmcu.h
+.\objects\key.o: .\FWLib\inc\stm32f10x_dma.h
+.\objects\key.o: .\FWLib\inc\stm32f10x_exti.h
+.\objects\key.o: .\FWLib\inc\stm32f10x_flash.h
+.\objects\key.o: .\FWLib\inc\stm32f10x_fsmc.h
+.\objects\key.o: .\FWLib\inc\stm32f10x_gpio.h
+.\objects\key.o: .\FWLib\inc\stm32f10x_i2c.h
+.\objects\key.o: .\FWLib\inc\stm32f10x_iwdg.h
+.\objects\key.o: .\FWLib\inc\stm32f10x_pwr.h
+.\objects\key.o: .\FWLib\inc\stm32f10x_rcc.h
+.\objects\key.o: .\FWLib\inc\stm32f10x_rtc.h
+.\objects\key.o: .\FWLib\inc\stm32f10x_sdio.h
+.\objects\key.o: .\FWLib\inc\stm32f10x_spi.h
+.\objects\key.o: .\FWLib\inc\stm32f10x_tim.h
+.\objects\key.o: .\FWLib\inc\stm32f10x_usart.h
+.\objects\key.o: .\FWLib\inc\stm32f10x_wwdg.h
+.\objects\key.o: .\FWLib\inc\misc.h
+.\objects\key.o: BSP\delay.h
+.\objects\key.o: BSP\sys.h
+.\objects\key.o: BSP\beep.h
+.\objects\key.o: BSP\usart.h
+.\objects\key.o: D:\keil MDK\ARM\ARMCC\Bin\..\include\stdio.h
+.\objects\key.o: BSP\OLED_I2C.h
