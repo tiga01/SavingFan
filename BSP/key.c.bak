@@ -1,0 +1,157 @@
+/*******************************************************
+*          键盘扫描函数						        *
+********************************************************/
+#include "key.h"
+#include "delay.h"
+#include "beep.h"
+#include "sys.h"
+#include "usart.h"
+
+void keyscan()	//调节温度，20-30度
+{
+	u8 temp;
+	u8 temper=25;				//全局变量
+	u16 speed=500;			//全局变量
+	u8 function=0;			//全局变量
+//	beep();
+//	display();
+  if(GPIO_ReadInputDataBit(GPIOA , GPIO_Pin_4)==0)	   //是否KEY3设置
+	{
+		 delay_ms(40);
+	   if(GPIO_ReadInputDataBit(GPIOA , GPIO_Pin_4) ==0)		//再一次判断按键是否松开
+	   {
+		  beep(1);		//蜂鸣器一声
+		  temp++;			//功能编号
+		  while(!GPIO_ReadInputDataBit(GPIOA , GPIO_Pin_4))	//耗时等待KEY3
+		  {
+//		  	send(); //数据处理
+//	 			display(b5,b4,b3,b2,b1,b0);	//显示
+		  } //按键是否松开
+					USART_SendData(USART1,temp);	//%%%
+					while (USART_GetFlagStatus(USART1, USART_FLAG_TC) == RESET) {}		//%%%
+		  if(temp==1)	 //调节温度阈值
+		  {
+			 	function=1;
+		  }
+		  if(temp==2)	 //手动调节速度
+		  {
+			 	function=2;
+		  }
+		  if(temp==3)	  //调节x
+		  {
+		  	function=3;
+		  }
+		  if(temp==4)	 //恢复自动状态，退出设置
+		  {
+		  	function=0;
+			 	temp=0;
+		  }
+	   }
+	}
+	if(temp!=0)		//设置时
+	{
+	  if(GPIO_ReadInputDataBit(GPIOA , GPIO_Pin_1) ==0)	//KEY2加操作
+	  {
+		 delay_ms(40);	 //消抖
+		 if(GPIO_ReadInputDataBit(GPIOA , GPIO_Pin_1) ==0)	  //再一次判断按键是否松开
+		 {
+		  beep(1);		//蜂鸣器一声
+			while(!GPIO_ReadInputDataBit(GPIOA , GPIO_Pin_1))
+			{
+//				send(); //数据处理
+//	 			display(b5,b4,b3,b2,b1,b0);
+			}  //按键是否松开
+			if(temp==1)	   // 阈值加
+			{
+			   temper++;
+					USART_SendData(USART1,temper);
+					while (USART_GetFlagStatus(USART1, USART_FLAG_TC) == RESET) {}
+			   if(temper>30)
+			   {
+		  		temper=30;
+		  		beep(2);		//蜂鸣器2声
+//		  		set_err_flag=1;
+			   }
+			}
+			if(temp==2)	    // 速度加
+			{
+			  speed++;
+				USART_SendData(USART1,speed);
+				while (USART_GetFlagStatus(USART1, USART_FLAG_TC) == RESET) {}
+			  if(speed > 900)	//PWM最大值
+			  {
+		  		speed = 900;
+		  		beep(2);		//蜂鸣器2声
+//		  	set_err_flag=2;
+			  }
+			}
+/*			if(temp==3)	   // 调节时加
+			{
+			   shi++;
+			   if(shi==24)
+			   {
+			      shi=0;
+			   }
+			}							*/
+		}
+	  }
+	  if(GPIO_ReadInputDataBit(GPIOA , GPIO_Pin_0) ==0)		//KEY1减操作
+	  {
+		delay_ms(40);	 //消抖
+		if(GPIO_ReadInputDataBit(GPIOA , GPIO_Pin_0) ==0)	 //KEY1
+		{
+		   beep(1);		//蜂鸣器1声
+		   while(!GPIO_ReadInputDataBit(GPIOA , GPIO_Pin_0))
+		   {
+//		   	send(); //数据处理
+//	 		display(b5,b4,b3,b2,b1,b0);
+		   }	  //按键是否松开
+		   if(temp==1)		// 阈值减
+		   {
+			  temper--;
+				USART_SendData(USART1,temper);
+				while (USART_GetFlagStatus(USART1, USART_FLAG_TC) == RESET) {}
+			  if(temper<20)
+			  {
+			     temper=20;
+		   		 beep(2);		//蜂鸣器2声
+			  }
+		   }
+		   if(temp==2)	 // 速度减
+		   {
+			   speed=speed-50;
+					USART_SendData(USART1,speed);
+					while (USART_GetFlagStatus(USART1, USART_FLAG_TC) == RESET) {}
+			   if( speed<0xFFFF )
+			   {
+		  		speed=0;
+		  		beep(2);		//蜂鸣器2声
+			   }
+		   }
+/*		   if(temp==3)	 // 调节时减
+		   {
+			  shi--;
+			  if(shi==-1)
+			  {
+			     shi=23;
+			  }
+		   }					*/
+			}
+	  }
+  }
+}
+
+void key_Init(void)
+{
+	GPIO_InitTypeDef  GPIO_InitStructure;
+
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);	//NO1
+
+	GPIO_InitStructure.GPIO_Pin=GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_4;		//KEY 0/1/4
+	GPIO_InitStructure.GPIO_Mode=GPIO_Mode_IPU;
+
+	GPIO_Init(GPIOA,&GPIO_InitStructure);
+
+}
+
+///////////////////////////////////////////
